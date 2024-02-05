@@ -1,0 +1,14 @@
+<table>
+  <thead>
+    <tr>
+      <th>Employee Name</th>
+      <th>Total Hours</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let employee of employees" [style.background-color]="employee.workedHours < 100 ? 'red' : ''">
+      <td>{{ employee.name }}</td>
+      <td>{{ employee.workedHours }} hours</td>
+    </tr>
+  </tbody>
+</table>

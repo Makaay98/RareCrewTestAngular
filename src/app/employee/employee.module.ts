@@ -4,12 +4,15 @@ import { EmployeeListComponent } from './components/employee-list/employee-list.
 import { EmployeeMainComponent } from './employee-main/employee-main.component';
 import { EmployeeService } from './service/employee.service';
 import { HttpClientModule } from '@angular/common/http';
-
+import { EmployeeChartComponent } from './components/employee-chart/employee-chart.component';
+import 'chart.js';
+import { BrowserModule } from '@angular/platform-browser';
 @NgModule({
-  declarations: [EmployeeListComponent, EmployeeMainComponent],
+  declarations: [EmployeeListComponent, EmployeeMainComponent, EmployeeChartComponent],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserModule
   ],
   exports: [EmployeeMainComponent],
   providers: [EmployeeService]

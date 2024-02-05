@@ -11,13 +11,13 @@ export class EmployeeService {
   baseUrl: string = 'https://rc-vault-fap-live-1.azurewebsites.net/';
   apiCode: string = 'vO17RnE8vuzXzPJo5eaLLjXjmRW07law99QTD90zat9FfOQJKKUcgQ==';
 
-  employees = new Subject<Employee[]>;
+  employees = new Subject<Employee[]>();
 
   constructor(private client: HttpClient) {}
 
   initializeEmployees() {
     this.getEmployees().subscribe((data) => {
-      this.employees.next(this.getMappedAndCalculatedEmployees(data))
+      this.employees.next(this.getMappedAndCalculatedEmployees(data));
     });
   }
 
@@ -37,10 +37,10 @@ export class EmployeeService {
 
       const totalHours = this.calculateTotalHours(StarTimeUtc, EndTimeUtc);
 
-      if (employeeDictionary[EmployeeName ?? "N/A"]) {
-        employeeDictionary[EmployeeName ?? "N/A"] += totalHours;
+      if (employeeDictionary[EmployeeName ?? 'N/A']) {
+        employeeDictionary[EmployeeName ?? 'N/A'] += totalHours;
       } else {
-        employeeDictionary[EmployeeName ?? "N/A"] = totalHours;
+        employeeDictionary[EmployeeName ?? 'N/A'] = totalHours;
       }
     }
 
@@ -50,12 +50,22 @@ export class EmployeeService {
         workedHours: Math.round(totalHours),
       })
     );
-      console.log(employeeArray)
-    return employeeArray;
+
+    const totalWorkedHours = employeeArray.reduce(
+      (total, employee) => total + employee.workedHours,
+      0
+    );
+
+    const employeesWithPercentage = employeeArray.map((employee) => ({
+      ...employee,
+      percentage: Math.round((employee.workedHours / totalWorkedHours) * 100),
+    }));
+
+    return employeesWithPercentage;
   }
 
   private calculateTotalHours(startTime?: string, endTime?: string): number {
-    if(!startTime || !endTime) return 0
+    if (!startTime || !endTime) return 0;
     const startTimestamp = new Date(startTime).getTime();
     const endTimestamp = new Date(endTime).getTime();
     const millisecondsInHour = 1000 * 60 * 60;
